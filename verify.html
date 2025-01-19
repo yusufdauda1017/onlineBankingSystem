@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/1d6525ef6a.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="asset/bootstrap-5.0.2/css/bootstrap.min.css" />
+    <style>
+      :root {
+        --primary-color: #559403;
+        --primary-hover-color: #005313;
+        --background-color: #001f10;
+        --text-black: #333;
+        --text-white: #f5f5f5;
+      }
+      .lighter-black{
+color: #77777799;
+      }
+      .btn-success {
+        background-color: var(--primary-color);
+        color: var(--text-white);
+      }
+
+      .btn-success:hover {
+        background-color: var(--primary-hover-color);
+        color: var(--text-white);
+      }
+
+      /* Fixed Header */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: var(--background-color);
+        z-index: 10;
+      }
+
+      .verify-content {
+        margin-top: 5rem; /* Adjust based on header height */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 5rem);
+        border-radius: 10px;
+      }
+.verify-header{
+    border-top-left-radius: 10px ;
+    border-top-right-radius: 10px ;
+
+}
+      .verify-container {
+        padding: 2rem 4rem;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        background-color: var(--text-white);
+      }
+
+      .code-inputs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .verify-box {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+        text-align: center;
+        border: 2px solid var(--background-color);
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .verify-box:focus {
+        border-color: var(--primary-hover-color);
+        outline: none;
+        box-shadow: 0px 0px 4px var(--primary-hover-color);
+      }
+    </style>
+    <title>Verification</title>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="container d-flex align-items-center justify-content-between">
+        <img
+          src="img/logo/logo-1.png"
+          alt="logo"
+          class="img-fluid"
+          style="max-width: 150px"
+        />
+        <div class="text-end text-light">
+          <p>
+            Already have an account?
+            <a href="login" class="btn btn-success px-4 mx-3">Log In</a>
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Verification Section -->
+    <section id="verification">
+
+      <div class="container verify-content">
+
+        <div class="row">
+
+        <div class="col-sm-12">
+            <h5 class="mt-3 mb-3 lighter-black">Step 2 of 4</h5>
+        <h3 class="btn-success text-center py-3 verify-header">Verification</h3>
+        <div class="verify-container text-center">
+                    <p>Enter the 4-digit code sent to your number</p>
+                    <div class="code-inputs">
+                    <input type="text" maxlength="1" class="verify-box" />
+                    <input type="text" maxlength="1" class="verify-box" />
+                    <input type="text" maxlength="1" class="verify-box" />
+                    <input type="text" maxlength="1" class="verify-box" />
+                    </div>
+                    <button class="btn btn-success mt-5 px-4">Verify</button>
+                </div>
+        </div>
+
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Ensure inputs only accept numbers and auto-move focus
+      const inputs = document.querySelectorAll('.verify-box');
+
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          const value = e.target.value;
+
+          // If non-digit character is entered, clear the input
+          if (!/^\d$/.test(value)) {
+            e.target.value = '';
+            return;
+          }
+
+          // Move to the next input if there's a next one
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+        });
+        input.addEventListener('keydown', (e) => {
+          // Handle backspace key to move focus to previous input
+          if (e.key === 'Backspace' && !input.value && index > 0) {
+            inputs[index - 1].focus();
+          }
+        });
+      });
+    </script>
+    <script src="asset/bootstrap-5.0.2/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
