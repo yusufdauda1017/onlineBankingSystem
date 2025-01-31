@@ -1,0 +1,640 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --primary-color: #559403;
+  --primary-hover-color: #005313;
+  --background-color: #001f10;
+  --text-black: #333;
+  --text-white: #eeeeee;
+}
+body{
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--text-white);
+  color: var(--text-black);
+  line-height: 1.6;
+overflow: hidden;
+height: 100vh;
+}
+.hidden{
+  display: none;
+}
+.active{
+display: block;
+}
+/* Header Styling */
+.header {
+  background-color: var(--text-white);
+  border-bottom: 1px solid var(--primary-hover-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100% - 250px);
+  z-index: 1000;
+}
+
+.icon-header {
+  height: 35px;
+  width: 100%;
+  background-color: var(--background-color);
+  border-radius: 50%;
+  padding: 10px;
+  margin: auto;
+  max-width: 35px;
+  color: var(--text-white) !important;
+  text-align: center;
+}
+
+.profile-img {
+  color: var(--background-color) !important;
+  font-family: sans-serif;
+  font-stretch: expanded;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem;
+}
+
+/* Your Sidebar Styling */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background: var(--background-color);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 2px;
+  transition: all 0.3s ease-in-out;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#sidebar ul li a {
+  color: var(--text-white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+#sidebar ul li a:hover {
+  background: var(--primary-hover-color);
+  border-left: 8px solid var(--text-white);
+}
+
+#sidebar ul li a i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+/* main content  */
+
+.main-content {
+  margin-top: 4rem;
+  width: calc(100% - 250px);
+  margin-left: 250px;
+  height: calc(100vh - 7rem); /* Full viewport height minus navbar height */
+  overflow-y: auto; /* Add vertical scrollbar only to this section */
+  padding: 20px ;
+  box-sizing: border-box; /* Ensure padding is included in the width/height calculation */
+}
+.transfer-content{
+  margin-top: 4rem;
+  width: calc(100% - 250px); /* Ensures the width excludes the sidebar */
+  margin-left: 250px; /* Aligns the main content with the sidebar */
+  height: calc(100vh - 6rem); /* Full viewport height minus navbar height */
+  overflow-y: auto; /* Add vertical scrollbar only to this section */
+  padding: 20px;
+  box-sizing: border-box; /* Ensure padding is included in the width/height calculation */
+}
+.header-name {
+  margin: 0;
+  padding: 0;
+  text-align: center; /* Centers the content horizontally */
+}
+.header-name .name h3 {
+  color: #777777;
+}
+
+.header-name .name h3 span {
+  color: #292929;
+}
+
+.name img {
+  width: 34px;
+  height: 34px;
+  vertical-align: middle;
+}
+
+.location-name,
+.location-name a {
+  font-size: 18px;
+  color: var(--primary-hover-color);
+  text-decoration: none;
+  font-style: italic;
+  font-family: monospace;
+  /* font-weight: 100; */
+}
+
+.account-container {
+  border: 2px solid var(--background-color);
+  padding: 1.2rem;
+  margin: 1rem;
+  border-radius: 12px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--primary-color),
+    var(--primary-color) 10px,
+    var(--primary-hover-color) 10px,
+    var(--primary-hover-color) 20px
+  );
+  color: var(--text-white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+}
+
+.account-details {
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+.account-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.account-number {
+  font-size: 16px;
+  color: var(--text-white);
+  margin: 4px 0;
+}
+
+.account-balance {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account-balance svg {
+  fill: #ffffff;
+}
+
+.balance-amount {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-left: -10px;
+}
+
+.account-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.action-button {
+  background-color: var(--text-white) !important;
+  border: 2px solid var(--primary-hover-color) !important;
+  color: var(--background-color) !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: var(--primary-hover-color) !important;
+  color: var(--text-white) !important;
+}
+
+.action-button.withdraw {
+  background-color: #f44336; /* Red for withdraw */
+}
+.action-button.deposit {
+  background-color: #ffff; /* Red for withdraw */
+  color: var(--text-black);
+}
+.action-button.withdraw:hover {
+  background-color: #c62828;
+}
+.action-button.deposit:hover {
+  background-color: var(--primary-color);
+  color: var(--text-white);
+}
+
+.payment-container {
+  background-color: #ffffff !important; /* Professional light background */
+  border-radius: 16px;
+  margin: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+
+}
+
+.payment-container h3 {
+  font-size: 1.3rem;
+  font-weight: normal;
+  color: var(--background-color);
+}
+
+.payment-option {
+  padding: 16px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: 2px solid var(--primary-hover-color);
+  background-color: var(--text-white);
+  text-decoration: none;
+}
+.payment-option:hover {
+  background-color: var(--primary-color); /* Light highlight on hover */
+  color: var(--text-white) !important;
+  transform: translateY(-2px); /* Slight lift */
+}
+
+
+.payment-option:hover i,
+.payment-option:hover span {
+  color: var(--text-white) !important; /* Icon and text turn white on hover */
+}
+
+.payment-option i {
+  font-size: 1.5rem;
+}
+
+.payment-option span {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primary-hover-color) !important;
+}
+
+
+.prequent-container {
+  background-color: #ffffff;
+  border-radius: 16px;
+  margin: 2rem 1rem;
+  padding:1rem  3rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.prequent-container h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-hover-color);
+  margin-bottom: 1rem;
+  text-align: start;
+margin-left: -1.5rem;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.prequent {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--primary-color);
+  width: 100%;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.prequent:hover {
+  background-color: #4caf50;
+  color: var(--text-white);
+  transform: translateY(-3px);
+}
+
+.prequent img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.prequent span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary-hover-color);
+}
+
+.prequent span p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+}
+
+.prequent span:hover {
+  color: var(--text-white);
+}
+.prequent span p:hover {
+  color: var(--text-white);
+}
+
+
+.swiper-button-next, .swiper-button-prev {
+  color: #4caf50;
+font-size: 10px;
+position: absolute;
+top: 73%;
+right: 5px;
+transform: translateY(-50%);
+z-index: 10;
+}
+
+.swiper {
+  padding: 1rem 0;
+
+}
+
+.table-responsive {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  margin-bottom: 3rem;
+  padding: 1rem;
+}
+
+.table-responsive h3 {
+  font-size: 1.2rem;
+  color: var(--primary-hover-color);
+}
+
+.table-responsive a {
+  font-size: 0.9rem;
+  color: var(--primary-hover-color);
+  text-decoration: none;
+}
+
+.table-responsive a:hover {
+  text-decoration: underline;
+}
+
+.table th, .table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+
+
+  .footer {
+    background-color: var(--text-white);
+    border-top: 1px solid var(--primary-hover-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 5px 20px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: calc(100% - 250px);
+    z-index: 1000;
+  }
+
+/* beneficiaries  */
+  .back{
+font-size: 1rem;
+font-weight: bold;
+text-decoration: none;
+color: var(--primary-hover-color);
+  }
+
+ /* Beneficiaries container styles */
+ .beneficiaries-container {
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  margin-top: 4rem;
+}
+
+/* Search bar container styling */
+.search-bar-container {
+  position: relative;
+  width: 100%;
+  max-width: 98%;
+}
+
+/* Input field styling */
+.search-bar {
+  width: 100%;
+  border: 2px solid var(--primary-hover-color);
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease, padding 0.3s ease;
+}
+
+/* Input focus effect */
+.search-bar:focus {
+  border-color: var(--primary-color);
+  box-shadow: none;
+}
+
+/* Label styling */
+.form-label {
+  color: var(--background-color);
+  font-size: 0.8rem;
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  transition: top 0.3s ease, font-size 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+
+/* Label animation on input focus or value */
+.search-bar:focus + .form-label,
+.search-bar:not(:placeholder-shown) + .form-label {
+  top: 0px;
+  font-size: 0.7rem;
+background-color: #f8f9fa;
+  color: var(--primary-color);
+  padding: 0.3rem 0.8rem;
+}
+
+/* Add Beneficiary button styles */
+.action-button.deposit {
+  background-color: var(--primary-color);
+  color: var(--text-white);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 4rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button.deposit:hover {
+  background-color: var(--primary-hover-color);
+  transform: scale(1.05);
+}
+
+.action-button.deposit:active {
+  transform: scale(1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .beneficiaries-container {
+    flex-direction: column;
+  }
+
+  .action-button.deposit {
+    width: 100%;
+    text-align: center;
+  }
+
+  .search-bar {
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+
+.user-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid var(--background-color);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: #f9f9f9;
+
+}
+
+.badges {
+  width: 35px;
+  height: 35px;
+  background-color: var(--primary-hover-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.user-info {
+  flex: 1;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.user-info .name {
+  font-weight: bold;
+  margin: 0;
+color: var(--background-color);
+}
+
+.user-info .account {
+  color: gray;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.action-menu {
+  display: none;
+  text-align: right;
+}
+
+.action-menu .btn {
+  margin-left: 5px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+}
+
+.action-menu .btn.edit {
+  background-color: #007bff;
+  color: white;
+}
+
+.action-menu .btn.remove {
+  background-color: #dc3545;
+  color: white;
+}
+
+.action-menu .btn.transfer {
+  background-color: #28a745;
+  color: white;
+}
+
+
+
+/* .services{
+  margin: 1rem 3rem;
+} */
+.services-container {
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 1rem 2rem;
+}
+.services-header h3{
+    color: var(--primary-hover-color);
+    font-weight: bold;
+}
+.custom-col {
+  color: var(--primary-hover-color);
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+  transition: transform 0.2s, background-color 0.3s;
+  flex: 1;
+  margin: 0.8rem;
+max-width: 120px;
+width: 100%;
+border: 1px solid var(--primary-hover-color);
+}
+
+.custom-col:hover {
+  background-color: var(--primary-color);
+  color: var(--text-white);
+  transform: scale(1.05);
+}
+
+.custom-col i {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+
+
+
+

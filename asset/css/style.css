@@ -77,7 +77,7 @@ nav.scrolled {
 }
 
 .nav-item a:hover {
-    color: var(--primary-color);
+    color: var(--text-white);
 }
 
 /* Dropdown Styles */
@@ -198,7 +198,9 @@ nav.scrolled {
     display: inline-block;
     transition: background-color 0.3s ease;
 }
-
+.btn a:hover{
+    color: var(--text-white) !important;
+}
 .btn:hover {
     background-color: var(--primary-hover-color);
 }
@@ -1062,8 +1064,8 @@ font-style: normal;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.faq-header {
-    background-image: url(../img/protection/receptionists-5975962_1920.jpg);
+.faq-header{
+    background-image: url('../../img/protection/frequent.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -1756,7 +1758,7 @@ text-align: center;
 
 /* Sidebar Design */
 .side-bar {
-    background-image: url(../img/protection/call-center-8754751.jpg);
+    background-image: url('../../img/protection/call-center-8754751.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
