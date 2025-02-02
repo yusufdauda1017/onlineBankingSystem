@@ -1,4 +1,5 @@
 
+
 :root {
     --primary-color: #559403;
     --primary-hover-color: #005313;
@@ -189,12 +190,12 @@ border-radius: 10px;
     }
 
     .verify-content {
-        margin-top: 5rem; /* Adjust based on header height */
         display: flex;
         justify-content: center;
         align-items: center;
-        height: calc(100vh - 5rem);
-        border-radius: 10px;
+        height: 100vh;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
       }
 
 
@@ -233,14 +234,17 @@ border-radius: 10px;
         outline: none;
         box-shadow: 0px 0px 4px var(--primary-hover-color);
       }
-
+/* .creatingPasswordss{
+padding-left: 1.8rem !important;
+} */
       .create-content {
-        margin-top: 5rem;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: calc(100vh - 5rem);
+        height: 100vh ;
+color: var(--primary-hover-color);
       }
       .create-header {
         border-top-left-radius: 10px;
@@ -265,8 +269,8 @@ margin: 0;
 }
 
       .position-relative .form-control {
-  padding-right: 2.5rem;
-  padding-left: 2.5rem; /* Space for the icon */
+  padding-right: 2.5rem !important;
+  padding-left: 2.5rem !important; /* Space for the icon */
 }
 .input-group .form-control:focus {
     border: 1px solid var(--background-color) !important;
@@ -278,4 +282,60 @@ margin: 0;
   color: #6c757d; /* Adjust icon color */
   font-size: 1.2rem;
   z-index: 5; /* Ensure it appears above the input */
+}
+
+.loaderr-containerrr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    z-index: 9999;
+}
+
+.show-loader{
+    display: flex;
+}
+
+/* The logo inside the spinner */
+.logoees {
+    width: 250px;
+    height: 250px;
+    animation: zoomInOut 2s ease-in-out infinite, ribbonRotate 3s ease-in-out infinite;
+}
+
+/* Zoom in/out effect on the logo */
+@keyframes zoomInOut {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2); /* Zoom in */
+    }
+    100% {
+        transform: scale(1); /* Zoom out */
+    }
+}
+
+/* Ribbon-like rotation effect (spinning with 3D effect) */
+@keyframes ribbonRotate {
+    0% {
+        transform: rotate(0deg) rotateX(0deg) rotateY(0deg);
+    }
+    25% {
+        transform: rotate(90deg) rotateX(20deg) rotateY(10deg); /* Add slight perspective for 3D effect */
+    }
+    50% {
+        transform: rotate(180deg) rotateX(0deg) rotateY(0deg);
+    }
+    75% {
+        transform: rotate(270deg) rotateX(-20deg) rotateY(-10deg);
+    }
+    100% {
+        transform: rotate(360deg) rotateX(0deg) rotateY(0deg);
+    }
 }
