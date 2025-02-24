@@ -1,0 +1,122 @@
+{
+    "status": true,
+    "message": "Banks retrieved",
+    "data": [
+
+
+        {"id":1,"name":"Access Bank","slug":"access-bank","code":"044","longcode":"044150149","gateway":"emandate","pay_with_bank":false,"supports_transfer":true,"active":true,"country":"Nigeria","currency":"NGN","type":"nuban",
+         "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000014.png","is_deleted":false,"createdAt":"2016-07-14T10:04:29.000Z","updatedAt":"2020-02-18T08:06:44.000Z"},
+        {"id":3,"name":"Access Bank (Diamond)","slug":"access-bank-diamond","code":"063","longcode":"063150162",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000014.png","gateway":"emandate","pay_with_bank":false,"supports_transfer":true,"active":true,"country":"Nigeria","currency":"NGN","type":"nuban","is_deleted":false,"createdAt":"2016-07-14T10:04:29.000Z","updatedAt":"2020-02-18T08:06:48.000Z"},
+
+      {
+        "name": "Zenith Bank",
+        "code": "057",
+         "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000015.png"
+      },
+      {
+        "name": "First Bank of Nigeria",
+        "code": "011",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000016.png"
+      },
+      {
+        "name": "United Bank for Africa",
+        "code": "033",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000004.png"
+      },
+      {
+        "name": "Guaranty Trust Bank",
+        "code": "058",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000013.png"
+      },
+      {
+        "name": "Fidelity Bank",
+        "code": "070",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000007.png"
+      },
+      {
+        "id": 231,
+        "InstitutionCode": "000003",
+        "InstitutionName": "FCMB",
+        "Category": "2",
+        "dump": null,
+        "created_at": "2020-03-02 20:44:48",
+        "updated_at": "2020-03-02 20:44:48",
+        "deleted_at": null,
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000003.png"
+    },
+      {
+        "name": "Ecobank Nigeria",
+        "code": "050",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000010.png"
+      },
+      {
+        "name": "Stanbic IBTC Bank",
+        "code": "221",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000012.png"
+      },
+      {
+        "name": "Union Bank of Nigeria",
+        "code": "032",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000018.png"
+      },
+      {
+        "name": "Sterling Bank",
+        "code": "232",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000001.png"
+      },
+      {
+        "name": "Wema Bank",
+        "code": "035",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000017.png"
+      },
+      {
+        "name": "Polaris Bank",
+        "code": "076",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000008.png"
+      },
+      {
+        "name": "Keystone Bank",
+        "code": "082",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000002.png"
+      },
+
+      {
+        "name": "Unity Bank",
+        "code": "215",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000011.png"
+      },
+      {
+        "name": "Moniepoint MFB",
+        "code": "50515",
+        "logo": "https://cdn.brandfetch.io/id3TFiQ_Bi/w/400/h/400/theme/dark/icon.jpeg?c=1bx1742835521109id64Mup7actBGkNPoT&t=1732664167961"
+      },
+      {
+        "name": "VFD Microfinance Bank",
+        "code": "566",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/090110.png"
+      },
+      {
+        "name": "Jaiz Bank",
+        "code": "301",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000006.png"
+      },
+      {
+        "name": "TAJ Bank",
+        "code": "302",
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/000026.png"
+      },
+      {
+        "id": 373,
+        "InstitutionCode": "090267",
+        "InstitutionName": "KUDA MICROFINANCE BANK",
+        "Category": "9",
+        "dump": null,
+        "created_at": "2020-03-02 20:44:54",
+        "updated_at": "2020-08-24 00:02:52",
+        "deleted_at": null,
+        "logo": "https://cloudfilesstore.blob.core.windows.net/icons/Banks/090267.png"
+    }
+    ]
+  }
+  

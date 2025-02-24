@@ -1,0 +1,420 @@
+  /* Default Styling (for larger screens) */
+  .swal2-popup {
+    width: 30vw !important;
+    max-width: 330px !important;
+    min-width: 250px !important;
+    padding: 8px !important;
+    border-radius: 10px !important;
+}
+
+/* Title Styling */
+.swal2-title {
+    font-size: 1.3rem !important;
+}
+
+/* Icon Styling */
+.swal2-icon {
+    font-size: 0.6rem !important;
+    width: 50px !important;
+    height: 50px !important;
+}
+
+/* Text Styling */
+.swal2-html-container {
+    font-size: 0.8rem !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .swal2-popup {
+        width: 80vw !important; /* Make it take more width on small screens */
+        max-width: 300px !important;
+        min-width: 250px !important;
+        padding: 8px !important;
+    }
+
+    .swal2-title {
+        font-size: 1.1rem !important; /* Reduce title size for smaller screens */
+    }
+
+    .swal2-icon {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .swal2-html-container {
+        font-size: 0.7rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .swal2-popup {
+        width: 90vw !important; /* Almost full width on very small screens */
+        max-width: 280px !important;
+        padding: 8px !important;
+    }
+
+    .swal2-title {
+        font-size: 1rem !important;
+    }
+
+    .swal2-html-container {
+        font-size: 0.7rem !important;
+    }
+}
+
+
+
+/* Media Queries */
+@media (max-width: 990px) {
+    .prequent img {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .prequent span {
+      font-size: 0.75rem;
+    }
+  
+    .prequent span p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--primary-color);
+    }
+  
+    .payment-container {
+      padding: 12px !important;
+    }
+  
+    .payment-container > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 !important;
+    }
+  
+    .payment-option {
+      flex: 1 1 calc(50% - 20px) !important;
+      max-width: calc(50% - 20px) !important;
+      margin: 5px;
+    }
+  
+    .payment-option i {
+      font-size: 0.8rem;
+    }
+  
+    .payment-option span {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 850px) {
+    .services-container {
+      display: flex !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      flex-wrap: wrap;
+    }
+  
+    .services-container > div {
+      flex-direction: column !important;
+      flex: 1 1 48% !important;
+      max-width: 48% !important;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      width: 100%;
+      padding-left: 8px;
+      padding-right: 0;
+    }
+  
+    #sidebar {
+      left: -250px;
+      transition: left 0.3s ease-in-out;
+      top: 4.5rem;
+      overflow-y: auto;
+      z-index: 1001;
+    }
+  
+    .close-sidebar {
+      display: block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      width: 2rem;
+      height: 1.7rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
+  
+    .hamburger div {
+      width: 100%;
+      height: 2px;
+      background-color: #005313;
+      transition: all 0.3s ease;
+    }
+  
+    #sidebar.active {
+      left: 0;
+      top: 4.5rem;
+    }
+  
+    .main-content {
+      margin-left: 0;
+      width: 100%;
+      padding: 0;
+    }
+  
+    .transfer-content {
+      width: 100%;
+      margin-left: 0;
+      padding: 5px;
+    }
+  
+    .account-container {
+      padding: 0.8rem;
+      margin: 0.8rem;
+      gap: 10px;
+    }
+  
+    .account-details {
+      font-size: 1rem;
+    }
+  
+    .account-title {
+      font-size: 16px;
+    }
+  
+    .account-number {
+      font-size: 14px;
+      margin: 2px 0;
+    }
+  
+    .account-balance {
+      font-size: 1rem;
+      margin: 6px 0;
+      gap: 5px;
+    }
+  
+    .balance-amount {
+      font-size: 15px;
+    }
+  
+    .account-actions {
+      gap: 6px;
+    }
+  
+    .action-button {
+      padding: 1px;
+      font-size: 8px;
+    }
+  
+    .action-button.deposit {
+      padding: 0.5rem 0.8rem;
+      font-size: 12px;
+    }
+  
+    .payment-container > div {
+      flex-direction: column !important;
+      padding: 0 !important;
+    }
+  
+    .payment-option {
+      padding: 10px;
+      flex-direction: row !important;
+      margin: 10px;
+      width: 100%;
+      flex: 1 1 calc(100% - 20px) !important;
+      max-width: calc(100% - 20px) !important;
+      margin: 5px;
+    }
+  
+    .payment-option i {
+      font-size: 0.8rem;
+      text-align: start;
+    }
+  
+    .payment-option span {
+      font-size: 1rem;
+      text-align: center;
+    }
+  
+    .header-name .name,
+    .location-name {
+      padding-top: 0.8rem;
+    }
+  
+    .header-name .name h3 {
+      font-size: 1rem;
+    }
+  
+    .name img {
+      width: 28px;
+      height: 28px;
+    }
+  
+    .transfer-content {
+      width: 100%;
+      margin-left: 0;
+      padding: 5px;
+    }
+  
+    .back {
+      font-size: 10px;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  
+    .location-name,
+    .location-name a {
+      font-size: 12px;
+    }
+  
+    .swal2-popup {
+      width: 80vw !important;
+      max-width: 300px !important;
+      min-width: 250px !important;
+      padding: 8px !important;
+    }
+  
+    .swal2-title {
+      font-size: 1.1rem !important;
+    }
+  
+    .swal2-icon {
+      width: 50px !important;
+      height: 50px !important;
+    }
+  
+    .swal2-html-container {
+      font-size: 0.7rem !important;
+    }
+  
+    .dropdown-toggle::after {
+      display: block;
+    }
+  
+    .dropdown .dropdown-toggle span {
+      display: none;
+    }
+  
+    .table th,
+    .table td {
+      font-size: 0.8rem;
+      padding: 6px;
+    }
+  
+    .table-responsive h3 {
+      font-size: 1rem;
+    }
+  
+    .table-responsive a {
+      font-size: 0.8rem;
+    }
+  
+    .action-btn {
+      font-size: 0.7rem;
+      padding: 5px 10px;
+    }
+  
+    .table th {
+      font-size: 0.6rem;
+      padding: 5px;
+    }
+  
+    .table td {
+      font-size: 0.6rem;
+      padding: 5px;
+    }
+  
+    .table-responsive h3 {
+      font-size: 1rem;
+    }
+  
+    .table-responsive a {
+      font-size: 0.8rem;
+    }
+  
+    .action-btn {
+      font-size: 0.6rem;
+      padding: 4px 8px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .table-responsive {
+      margin: 0.5rem;
+      padding: 0.5rem;
+    }
+  
+    .table th,
+    .table td {
+      font-size: 0.7rem;
+      padding: 5px;
+    }
+  
+    .action-btn {
+      font-size: 0.6rem;
+      padding: 4px 8px;
+    }
+  
+    .beneficiaries-container {
+      flex-direction: column;
+    }
+  
+    .action-button.deposit {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .search-bar {
+      max-width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .swal2-popup {
+      width: 90vw !important;
+      max-width: 280px !important;
+      padding: 8px !important;
+    }
+  
+    .swal2-title {
+      font-size: 1rem !important;
+    }
+  
+    .swal2-html-container {
+      font-size: 0.7rem !important;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .table th,
+    .table td {
+      font-size: 0.7rem;
+    }
+  
+    .action-btn {
+      width: 100%;
+      display: block;
+    }
+  
+    .footer {
+      width: 100%;
+    }
+  }
