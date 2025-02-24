@@ -1,0 +1,16 @@
+{
+    "status": true,
+    "message": "Banks retrieved",
+    "data": [
+
+
+
+{"id":171,"name":"OPay","slug":"paycom","code":"999992","longcode":"","gateway":"ibank","pay_with_bank":true,"supports_transfer":true,"active":true,"country":"Nigeria","currency":"NGN","type":"nuban","is_deleted":false,"createdAt":"2020-11-24T10:20:45.000Z","updatedAt":"2025-01-22T17:04:57.000Z",  "logo": "https://cdn.brandfetch.io/id2zsUpkDc/w/400/h/400/theme/dark/icon.png?c=1bx1742825740986id64Mup7actyqSHVkF&t=1732645273400"},
+      {
+        "name": "PalmPay",
+        "code": "999991",
+        "logo": "./User/PalmPay Logo Purple.png"
+      }
+
+    ]
+}

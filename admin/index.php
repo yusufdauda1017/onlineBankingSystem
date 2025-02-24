@@ -2,12 +2,13 @@
 session_start();
 
 // Define timeout duration in seconds (1 minute = 60 seconds)
-$timeout_duration = 60;
+$timeout_duration =  5*60;
+
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     // If no session, redirect to login page
-    header('Location: ../login-form/index.php');
+    header('Location: ../src/login-form/index.php');
     exit();
 }
 
@@ -21,7 +22,7 @@ if (isset($_SESSION['last_activity'])) {
         session_destroy();
 
         // Redirect to login page after timeout
-        header('Location: ../login-form/index.php');
+        header('Location: ../src/login-form/index.php');
         exit();
     }
 }
@@ -211,113 +212,93 @@ $_SESSION['last_activity'] = time();
     </div>
     <!-- Main Content -->
 
-    <div class="dashboard section active" id="dashboard">
+  <div class="dashboard section active" id="dashboard">
       <div
         class="greating greating d-flex justify-content-between align-items-center"
         id=""
       >
-        <div class=""><h4 class="mb-4">Welcome back Yusuf!</h4></div>
+        <div class=""><<h4 class="mb-4">Welcome back <?php echo $_SESSION['user_name']; ?>!</h4>        </div>
         <div class="me-3">
           <h6 class="mb-4"><span style="color: #9e9d9d">Dashboard</span></h6>
         </div>
       </div>
       <div class="main-content container-fluid content" id="">
         <!-- Dashboard Cards -->
-        <!-- Dashboard Cards -->
         <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-md-4 mb-3">
-            <div class="dashboard-card">
-              <h4>Total Users</h4>
-              <p>1,245</p>
-              <div class="card-footer">Updated 2 hours ago</div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="dashboard-card">
-              <h4>Total Transactions</h4>
-              <p>₦3,500,000</p>
-              <div class="card-footer">Updated today</div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="dashboard-card">
-              <h4>New Signups</h4>
-              <p>320</p>
-              <div class="card-footer">Updated 5 mins ago</div>
-            </div>
-          </div>
+    <!-- Total Users Card -->
+    <div class="col-md-4 mb-3">
+        <div class="dashboard-card shadow p-4 text-center">
+            <i class="fas fa-users fa-3x text-primary mb-2"></i>
+            <h4>Total Users</h4>
+            <p id="totalUsers" class="stat-value">Loading...</p>
+            <div class="card-footer text-muted" id="usersUpdated">Updating...</div>
         </div>
+    </div>
+
+    <!-- Total Transactions Card -->
+    <div class="col-md-4 mb-3">
+        <div class="dashboard-card shadow p-4 text-center">
+            <i class="fas fa-wallet fa-3x text-success mb-2"></i>
+            <h4>Total Transactions</h4>
+            <p id="totalTransactions" class="stat-value">Loading...</p>
+            <div class="card-footer text-muted" id="transactionsUpdated">Updating...</div>
+        </div>
+    </div>
+
+    <!-- New Signups Card -->
+    <div class="col-md-4 mb-3">
+        <div class="dashboard-card shadow p-4 text-center">
+            <i class="fas fa-user-plus fa-3x text-warning mb-2"></i>
+            <h4>New Signups</h4>
+            <p id="newSignups" class="stat-value">Loading...</p>
+            <div class="card-footer text-muted" id="signupsUpdated">Updating...</div>
+        </div>
+    </div>
+</div>
+
         <div class="line"></div>
 
-        <div class="d-flex justify-content-between align-items-center mt-4">
-          <div class="d-flex">
-            <select class="form-select me-2" style="width: 200px">
-              <option value="">Filter by Status</option>
-              <option value="success">Successful</option>
-              <option value="pending">Pending</option>
-              <option value="failed">Failed</option>
-            </select>
-            <input
-              type="date"
-              class="form-control"
-              style="width: 200px"
-              placeholder="Select Date"
-            />
-          </div>
-          <button class="btn btn-primary">Apply Filters</button>
-        </div>
+      <!-- Filters -->
+<div class="d-flex justify-content-between align-items-center mt-4">
+    <div class="d-flex">
+        <select class="form-select me-2" id="statusFilter" style="width: 200px">
+            <option value="">Filter by Status</option>
+            <option value="Successful">Successful</option>
+            <option value="Pending">Pending</option>
+            <option value="Failed">Failed</option>
+        </select>
+        <input type="date" class="form-control me-2" id="dateFilter" style="width: 200px" placeholder="Select Date">
+        <input type="text" class="form-control" id="searchTransaction" style="width: 200px" placeholder="Search Transaction ID">
+    </div>
+    <button class="btn btn-primary" id="applyFilters">Apply Filters</button>
+</div>
 
-        <!-- Real-Time Transactions Table -->
-        <div class="table-responsive mt-4">
-          <table class="table table-striped">
-            <thead class="thead-dark">
-              <tr>
+<!-- Real-Time Transactions Table -->
+<div class="table-responsive mt-4">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
                 <th>#</th>
                 <th>Transaction ID</th>
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>TRX12345</td>
-                <td>2025-01-16</td>
-                <td>₦10,000</td>
-                <td><span class="badge bg-success">Successful</span></td>
-                <td>
-                  <button class="btn btn-primary btn-sm">View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>TRX12346</td>
-                <td>2025-01-15</td>
-                <td>₦15,000</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td>
-                  <button class="btn btn-primary btn-sm">View</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- Pagination -->
-        <nav aria-label="Page navigation">
-          <ul class="pagination justify-content-center mt-3">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
+            </tr>
+        </thead>
+        <tbody id="transactionTable">
+            <!-- Transactions will be loaded here via AJAX -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-3" id="pagination">
+        <!-- Pagination buttons will be loaded here -->
+    </ul>
+</nav>
+
 
         <!-- Chart Section -->
         <div class="row mt-4">
@@ -355,9 +336,9 @@ $_SESSION['last_activity'] = time();
           <div class="col-md-4 mb-3">
             <div class="dashboard-card">
               <h3><i class="fas fa-clipboard"></i></h3>
-              <h4><a href="#total-users">View All Transactions</a></h4>
+              <h4><a href="index2.php">View All Transactions</a></h4>
               <div class="card-footer">
-                <a href="#total-users"
+                <a href="index2.php"
                   >Shows a list of all transfers and deposits made by users.</a
                 >
               </div>
@@ -427,6 +408,10 @@ $_SESSION['last_activity'] = time();
       </div>
     </div>
 
+
+
+
+<!-- end of it -->
     <div class="users section hidden" id="users">
       <div
         class="greating greating d-flex justify-content-between align-items-center"
@@ -1238,8 +1223,232 @@ $_SESSION['last_activity'] = time();
     </div>
 
 
+
+
+
+<!-- Transaction Details Modal -->
+<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Transaction ID:</strong> <span id="modalTransactionID"></span>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="copyTransactionID()">Copy</button>
+                </p>
+                <p><strong>Date:</strong> <span id="modalTransactionDate"></span></p>
+                <p><strong>Amount:</strong> <span id="modalTransactionAmount"></span></p>
+                <p><strong>Status:</strong> <span id="modalTransactionStatus"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="script.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let currentPage = 1;
+    let debounceTimer;
+
+    /** Fetch and update dashboard stats */
+    function fetchDashboardStats() {
+        fetch("./get_dashboard_stats.php")
+            .then(response => response.json())
+            .then(data => {
+                animateNumber("totalUsers", data.total_users || 0);
+                animateNumber("totalTransactions", data.total_transactions || 0, "₦");
+                animateNumber("newSignups", data.new_signups || 0);
+
+                updateTimestamp("usersUpdated");
+                updateTimestamp("transactionsUpdated");
+                updateTimestamp("signupsUpdated");
+            })
+            .catch(error => {
+                console.error("Error fetching stats:", error);
+            });
+    }
+
+    /** Smooth number animation */
+    function animateNumber(id, endValue, prefix = "") {
+        let element = document.getElementById(id);
+        let startValue = parseFloat(element.innerText.replace(/[^0-9]/g, "")) || 0;
+        let duration = 1000; // 1 second
+        let startTime = null;
+
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            let progress = Math.min((timestamp - startTime) / duration, 1);
+            let currentValue = Math.floor(progress * (endValue - startValue) + startValue);
+            element.innerText = prefix + new Intl.NumberFormat().format(currentValue);
+            if (progress < 1) requestAnimationFrame(step);
+        }
+
+        requestAnimationFrame(step);
+    }
+
+    /** Update last updated timestamp */
+    function updateTimestamp(id) {
+        let element = document.getElementById(id);
+        element.innerText = `Updated ${new Date().toLocaleTimeString()}`;
+    }
+
+    /** Fetch dashboard stats every 5 seconds */
+    setInterval(fetchDashboardStats, 5000);
+    fetchDashboardStats(); // Initial load
+
+    /** Fetch transactions with filters & pagination */
+    function fetchTransactions(page = 1, search = "") {
+        let status = $("#statusFilter").val();
+        let date = $("#dateFilter").val();
+
+        $.ajax({
+            url: "./fetch_transactions.php",
+            method: "GET",
+            data: { status: status, date: date, page: page, search: search },
+            dataType: "json",
+            success: function (response) {
+                let transactionTable = $("#transactionTable");
+                transactionTable.empty();
+
+                if (!response.transactions || response.transactions.length === 0) {
+                    transactionTable.append('<tr><td colspan="6" class="text-center">No transactions found</td></tr>');
+                } else {
+                    response.transactions.forEach((transaction, index) => {
+                        let badgeClass = transaction.status === "Successful" ? "bg-success" :
+                            transaction.status === "Pending" ? "bg-warning" :
+                            "bg-danger";
+
+                        let row = `
+                          <tr>
+                              <td>${index + 1}</td>
+                              <td>${transaction.transaction_no}</td>
+                              <td>${transaction.transaction_date}</td>
+                              <td>₦${transaction.amount}</td>
+                              <td><span class="badge ${badgeClass}">${transaction.status}</span></td>
+                              <td> <!-- ✅ Wrapped View button inside <td> -->
+                                  <button class="btn btn-primary btn-sm"
+                                          onclick="viewTransaction( '${transaction.transaction_no}', '${transaction.transaction_date}', '${transaction.amount}', '${transaction.status}')">
+                                      View
+                                  </button>
+                              </td>
+                          </tr>
+                        `;
+                        transactionTable.append(row);
+                    });
+                }
+
+                // Pagination Handling
+                let pagination = $("#pagination");
+                pagination.empty();
+                if (response.totalPages && response.totalPages > 1) {
+                    for (let i = 1; i <= response.totalPages; i++) {
+                        let activeClass = i === page ? "active" : "";
+                        pagination.append(`<li class="page-item ${activeClass}"><a class="page-link pagination-btn" href="#" data-page="${i}">${i}</a></li>`);
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching transactions:", error);
+                $("#transactionTable").html('<tr><td colspan="6" class="text-center text-danger">Failed to load transactions</td></tr>');
+            }
+        });
+    }
+
+    /** Debounced Live Search */
+    $("#searchTransaction").on("keyup", function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            let search = $(this).val();
+            fetchTransactions(1, search);
+        }, 500); // 500ms delay
+    });
+
+    /** Apply Filters */
+    $("#applyFilters").click(function () {
+        fetchTransactions();
+    });
+
+    /** Pagination Click Handling */
+    $(document).on("click", ".pagination-btn", function (e) {
+        e.preventDefault();
+        currentPage = $(this).data("page");
+        fetchTransactions(currentPage);
+    });
+
+    /** Auto Refresh Every 5 Seconds (resets on filter change) */
+    let refreshInterval = setInterval(() => fetchTransactions(currentPage), 5000);
+
+    $("#applyFilters, #searchTransaction").on("input", function () {
+        clearInterval(refreshInterval);
+        refreshInterval = setInterval(() => fetchTransactions(currentPage), 5000);
+    });
+
+    /** Initial Load */
+    fetchTransactions();
+
+
+});
+// Function to show transaction details on button click
+function viewTransaction(transaction_no, date, amount, status) {
+    // Set transaction details inside the modal
+    document.getElementById("modalTransactionID").innerText = transaction_no;
+    document.getElementById("modalTransactionDate").innerText = date;
+    document.getElementById("modalTransactionAmount").innerText = `₦${amount}`;
+
+    // Apply status badge with color
+    let statusElement = document.getElementById("modalTransactionStatus");
+    statusElement.innerText = status;
+    statusElement.className = "badge bg-secondary"; // Reset to default class
+
+    let formattedStatus = status.trim().toLowerCase(); // Ensure consistency
+
+    if (formattedStatus === "successful") {
+        statusElement.classList.replace("bg-secondary", "bg-success");
+    } else if (formattedStatus === "pending") {
+        statusElement.classList.replace("bg-secondary", "bg-warning");
+    } else {
+        statusElement.classList.replace("bg-secondary", "bg-danger");
+    }
+
+    // Show the Bootstrap modal
+    let transactionModal = new bootstrap.Modal(document.getElementById("transactionModal"));
+    transactionModal.show();
+}
+
+// Function to copy transaction ID with a toast notification
+function copyTransactionID() {
+    let transactionID = document.getElementById("modalTransactionID").innerText;
+
+    navigator.clipboard.writeText(transactionID).then(() => {
+        showToast("Transaction ID copied to clipboard!"); // Show toast notification
+    }).catch(err => {
+        console.error("Failed to copy:", err);
+    });
+}
+
+// Function to show a Bootstrap toast notification
+function showToast(message) {
+    let toastElement = document.getElementById("transactionToast");
+    let toastBody = document.getElementById("toastBody");
+    toastBody.innerText = message;
+
+    let toast = new bootstrap.Toast(toastElement);
+    toast.show();
+}
+
+
+</script>
+
   </body>
 </html>

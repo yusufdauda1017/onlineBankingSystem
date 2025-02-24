@@ -1,5 +1,48 @@
 
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Mailgun\Mailgun;
+use Dotenv\Dotenv;
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+// Get Mailgun credentials
+$mailgunApiKey = $_ENV['MAILGUN_API_KEY'];
+$mailgunDomain = $_ENV['MAILGUN_DOMAIN'];
+
+function sendEmail($email, $otp) {
+    global $mailgunApiKey, $mailgunDomain;
+
+    // Initialize Mailgun
+    $mg = Mailgun::create($mailgunApiKey);
+
+    try {
+        $mg->messages()->send($mailgunDomain, [
+            'from'    => 'noreply@trustp.me',
+            'to'      => $email,
+            'subject' => ' Trustpoint OTP Code',
+            'html'    => "
+                <div style='background-color: #f4f4f4; padding: 20px; font-family: Arial, sans-serif; text-align: center;'>
+                    <div style='background-color: #ffffff; border-radius: 8px; padding: 20px; max-width: 500px; margin: auto;'>
+                        <h1 style='color: #333;'>Your OTP Code</h1>
+                        <p style='color: #555; font-size: 16px;'>Your OTP is: <strong style='color: #007BFF;'>$otp</strong></p>
+                        <p style='color: #555; font-size: 14px;'>It will expire in <strong>2 minutes</strong>.</p>
+                        <p style='font-size: 12px; color: #999;'>Please do not share this code with anyone.</p>
+                    </div>
+                </div>"
+        ]);
+
+        return true;
+    } catch (\Mailgun\Exception\HttpClientException $e) {
+        error_log("Mailgun Error: " . $e->getMessage());
+        return false;
+    } catch (\Exception $e) {
+        error_log("General Error: " . $e->getMessage());
+        return false;
+    }
+}
 
 function generateOTP($email, $phoneNumber, $conn) {
     $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM users WHERE email = ? OR phone_number = ?");
@@ -52,47 +95,6 @@ function generateOTP($email, $phoneNumber, $conn) {
             'success' => false,
             'message' => 'Failed to generate OTP. Please try again.'
         ];
-    }
-}
-use Dotenv\Dotenv;
-use Mailgun\Mailgun;
-
-function sendEmail($email, $otp) {
-    require 'vendor/autoload.php';
-
-    $dotenv = Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
-
-    // Mailgun credentials from .env
-    $mailgunApiKey = $_ENV['MAILGUN_API_KEY'];
-    $mailgunDomain = $_ENV['MAILGUN_DOMAIN'];
-
-
-    $mg = Mailgun::create($mailgunApiKey);
-
-    try {
-        $mg->messages()->send($mailgunDomain, [
-            'from'    => 'noreply@trustp.me',
-            'to'      => $email,
-            'subject' => 'Your OTP Code',
-            'html'    => "
-                <div style='background-color: #f4f4f4; padding: 20px; font-family: Arial, sans-serif; text-align: center;'>
-                    <div style='background-color: #ffffff; border-radius: 8px; padding: 20px; max-width: 500px; margin: auto;'>
-                        <h1 style='color: #333;'>Your OTP Code</h1>
-                        <p style='color: #555; font-size: 16px;'>Your OTP is: <strong style='color: #007BFF;'>$otp</strong></p>
-                        <p style='color: #555; font-size: 14px;'>It will expire in <strong>2 minutes</strong>.</p>
-                        <p style='font-size: 12px; color: #999;'>Please do not share this code with anyone.</p>
-                    </div>
-                </div>"
-        ]);
-
-        return true;
-    } catch (\Mailgun\Exception\HttpClientException $e) {
-        error_log("Mailgun Error: " . $e->getMessage());
-        return false;
-    } catch (\Exception $e) {
-        error_log("General Error: " . $e->getMessage());
-        return false;
     }
 }
 
@@ -170,3 +172,4 @@ function verifyOTP($email, $inputOtp, $conn, $formData = null) {
         ];
     }
 }
+
