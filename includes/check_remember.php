@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../db/db_connect.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/db/db_connect.php';
+
 
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
     $remember_token = $_COOKIE['remember_token'];
@@ -46,7 +47,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
     } else {
         // If token is invalid, remove it and redirect to login
         setcookie("remember_token", "", time() - 3600, "/");
-        header("Location: ../src/login/index.php");
+        header("Location: ../login.php");
         exit();
     }
     $stmt->close();

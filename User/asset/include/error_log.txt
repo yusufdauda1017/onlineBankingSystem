@@ -1,0 +1,20 @@
+[08-Mar-2025 04:40:10 Africa/Lagos] Script started.
+[08-Mar-2025 04:40:10 Africa/Lagos] Input data: Array
+(
+    [recipient_account] => 8131812577
+    [amount] => 100
+    [note] => 
+    [pin] => 4321
+    [charges] => 1
+)
+
+[08-Mar-2025 04:41:10 Africa/Lagos] Script started.
+[08-Mar-2025 04:41:10 Africa/Lagos] Input data: Array
+(
+    [recipient_account] => 8131812577
+    [amount] => 1000
+    [note] => 
+    [pin] => 4321
+    [charges] => 10
+)
+

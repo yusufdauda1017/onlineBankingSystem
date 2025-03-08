@@ -12,10 +12,9 @@ session_start();
 
 // Prevent unauthorized access
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login-form/index.php');
+    header('Location: ../login.php');
     exit();
 }
-
 // Prevent session fixation attacks
 if (!isset($_SESSION['initiated'])) {
     session_regenerate_id(true);
@@ -28,7 +27,7 @@ if (!isset($_SESSION['user_agent'])) {
 } elseif ($_SESSION['user_agent'] !== hash('sha256', $_SERVER['HTTP_USER_AGENT'])) {
     session_unset();
     session_destroy();
-    header('Location: ../login-form/index.php');
+    header('Location: ../login.php');
     exit();
 }
 
@@ -37,7 +36,7 @@ $timeout_duration = 120;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
     session_unset();
     session_destroy();
-    header('Location: ../login-form/index.php');
+    header('Location: ../login.php');
     exit();
 }
 $_SESSION['last_activity'] = time();
@@ -54,7 +53,7 @@ $_SESSION['last_activity'] = time();
     <script src="https://kit.fontawesome.com/1d6525ef6a.js" crossorigin="anonymous"></script>
     <!-- Swiper CSS (if needed) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-    <link rel="icon" href="../img/logo/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="../asset/img/logo/logo.svg" type="image/svg+xml" />
     <title>Money Transfer</title>
     <style>
 
@@ -432,7 +431,7 @@ font-weight: 500;
     <div class="container" id="transferForm">
 
         <div class="header">
-          <img src="../img/logo/logo-1.png" alt="Brand Logo" />
+          <img src="../asset/img/logo/logo-1.png" alt="Brand Logo" />
         </div>
         <!-- Transfer Form Section -->
         <div class="shadow px-3" >
@@ -458,7 +457,9 @@ font-weight: 500;
           <div>
             <h4 class="text-center text-success mt-2 mb-4">Transfer Money</h4>
             <div class="input-container mb-0">
-              <input type="text" class="floating-input" placeholder=" " id="searchRecipient" />
+              
+              <input type="text" class="floating-input" id="recipientAccountInput" name="randomField123" autocomplete="off" />
+
               <label class="floating-label">Recipient Account Number</label>
             </div>
             <div class="spinner-border text-primary mt-4 mb-4 d-none" id="loadingSpinner" role="status">
@@ -499,7 +500,7 @@ font-weight: 500;
 
         <div class="container hidden" id="confirmationScreen">
 <div class="header">
-  <img src="../img/logo/logo-1.png" alt="Brand Logo" />
+  <img src="../asset/img/logo/logo-1.png" alt="Brand Logo" />
 </div>
         <!-- Confirmation Screen -->
         <div  class=" shadow p-3">
@@ -536,7 +537,7 @@ font-weight: 500;
         </div>
       <div class="container hidden" id="processingScreen">
     <div class="header text-center">
-        <img src="../img/logo/logo-1.png" alt="Brand Logo" class="logo" />
+        <img src="../asset/img/logo/logo-1.png" alt="Brand Logo" class="logo" />
     </div>
     <div class="processing-content text-center shadow p-4 rounded">
         <div class="spinner-border text-success mt-3" role="status"></div>
@@ -546,7 +547,7 @@ font-weight: 500;
 
 <div class="receipt-container hidden" id="receiptScreen">
     <div class="receipt-header text-center">
-        <img src="../img/logo/Untitled design (9).png" alt="Brand Logo" class="logo" />
+        <img src="../asset/img/logo/Untitled design (9).png" alt="Brand Logo" class="logo" />
         <h2 class="mb-2">Transaction Receipt</h2>
         <h3 class=" text-success"><span id="receipttotalDeduction"></span></h3>
     </div>
@@ -583,14 +584,6 @@ font-weight: 500;
     </div>
 </div>
 
-
-
-
-
-
-
-
-
  <!-- PIN Modal -->
  <div class="modal fade" id="pinModal" tabindex="-1" aria-labelledby="pinModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -607,10 +600,10 @@ font-weight: 500;
 
                     <!-- PIN Input Fields -->
                     <div class="d-flex justify-content-center gap-3" id="pinContainer">
-                        <input type="password" class="pin-box" maxlength="1">
-                        <input type="password" class="pin-box" maxlength="1">
-                        <input type="password" class="pin-box" maxlength="1">
-                        <input type="password" class="pin-box" maxlength="1">
+                        <input type="password" class="pin-box" maxlength="1" autocomplete="off">
+                        <input type="password" class="pin-box" maxlength="1" autocomplete="off">
+                        <input type="password" class="pin-box" maxlength="1" autocomplete="off">
+                        <input type="password" class="pin-box" maxlength="1" autocomplete="off">
                     </div>
 
                     <small class="d-none mt-2" id="pinError">Incorrect PIN. Try again.</small>
@@ -619,8 +612,8 @@ font-weight: 500;
                 <!-- Modal Footer -->
                 <div class="modal-footer d-flex justify-content-between mt-4">
                 <button type="button" class="btn btn-outline-light rounded-pill" id="goToProcess">
-    Cancel
-</button>
+                    Cancel
+                </button>
                     <button type="button" class="btn btn-success  rounded-pill fw-bold" id="confirmTransaction" disabled>
                         Confirm
                     </button>
@@ -632,11 +625,15 @@ font-weight: 500;
   </div>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./internal.js"></script>
+ 
+    <script src="./asset/script/internal.js"></script>
 <script>
+
+
   function toggleVisibility(id, icon) {
     let element = document.getElementById(id);
     if (element.classList.contains("hidden-text")) {
@@ -648,17 +645,8 @@ font-weight: 500;
     }
 }
 
-$(document).ready(function () {
-    let recipientName = sessionStorage.getItem("recipientName");
-    let recipientAccount = sessionStorage.getItem("recipientAccount");
 
-    if (recipientAccount) {
-        $("#searchRecipient").val(recipientAccount);
-        $("#account-name").text(recipientName);
-        $("#account-name").addClass("text-success");
-        $("#amountSection").removeClass("hidden"); // Show amount input
-    }
-});
+
 
 </script>
   </body>

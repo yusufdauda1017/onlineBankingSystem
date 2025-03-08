@@ -1,8 +1,8 @@
 
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . "/db/db_connect.php");
 
-require_once '../db/db_connect.php';
-require_once __DIR__ . '/../includes/check_remember.php'; // Include remember functionality
+require_once($_SERVER['DOCUMENT_ROOT'] . "/includes/check_remember.php");
 
 $timeout_duration = 60;
 
@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
     // If no session, check if "Remember Me" can re-authenticate
     if (!isset($_COOKIE['remember_token'])) {
         // If no session and no remember token → force login
-        header('Location: ../login-form/index.php');
+        header('Location: ../login.php');
         exit();
     }
 }
@@ -19,12 +19,13 @@ if (!isset($_SESSION['user_id'])) {
 // Check session timeout
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout_duration)) {
     if (isset($_COOKIE['remember_token'])) {
-      require_once __DIR__ . '/../includes/check_remember.php'; // Include remember functionality
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/includes/check_remember.php");
+ // Include remember functionality
     } else {
         session_unset();
         session_destroy();
         setcookie("remember_token", "", time() - 3600, "/");
-        header('Location: ../login-form/index.php?timeout=1');
+        header('Location: ../login.php?timeout=1');
         exit();
     }
 }
@@ -58,43 +59,32 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+ <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap CSS -->
 
-     <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- FontAwesome Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- FontAwesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <script
-      src="https://kit.fontawesome.com/1d6525ef6a.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"
-  />
+    <!-- Bootstrap CSS (Latest Stable Version) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="internal.css" />
-    <link rel="icon" href="..\img\logo\logo.svg" type="image/svg">
+    <!-- FontAwesome Icons (Single Version) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Swiper CSS (For Sliders/Animations) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./asset/css/style.css" />
+    <link rel="stylesheet" href="./asset/css/internal.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="./asset/img/logo/logo.svg" type="image/svg+xml">
+
     <title>User Dashboard || Trustpoint</title>
+</head>
 
-    </head>
   <body>
   <header class="header d-flex justify-content-between align-items-center">
-    <img src="../img/logo/logo.svg" alt="" class = "header-img-first"/>
-
+    <img src="..asset/img/logo/logo.svg" alt="" class = "header-img-first"/>
   <div class="hamburger me-3 ms-2 " onclick="toggleSidebar()">
     <div></div>
     <div></div>
@@ -145,14 +135,12 @@ $conn->close();
     </li>
   </ul>
 </div>
-
-
   </div>
 </header>
    <!-- Sidebar -->
 <div id="sidebar">
   <div class="brand mb-5">
-    <img src="../img/logo/logo-1.png" alt="" />
+    <img src="../asset/img/logo/logo-1.png" alt="" />
   </div>
   <button class="close-sidebar" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
   <ul>
@@ -214,10 +202,7 @@ $conn->close();
     </li>
   </ul>
 </div>
-
-
 <section class=" transfer-content section" id="transaction">
-
 <div
   class="d-flex justify-content-between align-items-center header-name px-5 py-3  mt-3"
 >
@@ -233,7 +218,6 @@ $conn->close();
   <div class="mt-3 mb-3 d-flex flex-row justify-content-between align-items-center">
   <h3 >Transaction History </h3>
   </div>
-
   <table class="table table-striped">
     <thead class="thead-dark">
       <tr>
@@ -251,28 +235,29 @@ $conn->close();
   </table>
 </div>
 </section>
-
-
 <footer class="footer d-flex justify-content-center align-items-center">
       <small>&copy; 2025, Trustpoint. All Rights
         Reserved.</small>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-    <script src="script.js">
-    </script>
+ <!-- Swiper JS (For Sliders) -->
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
-
-    <!-- Include SweetAlert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- jQuery (Load before dependent scripts) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-<script src="../login-form/script/logout.js"></script>
-<script src="script.js"></script>
-<script src="./internal.js"></script>
-<script src="./activity_log.js"></script>
-<script src="./upload.js"></script>
+<!-- SweetAlert (For Notifications) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Bootstrap JavaScript (Latest Stable Version) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom Scripts -->
+<script src="./asset/script/upload.js"></script>
+
+
+<script src="./asset/script/activity_log.js"></script>
+<script src="./asset/script/script.js"></script>
+<script src="./asset/script/internal.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const isViewAll = window.location.href.includes("view_all=true"); // Detect if it's the full page
@@ -280,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchTransactions(page = 1, viewAll = false) {
-    let url = `./fetch_transactions_user.php?page=${page}`;
+    let url = `https://trustpoint.wuaze.com/User/asset/include/fetch_transactions_user.php?page=${page}`;
     if (viewAll) {
         url += "&view=all";
     }

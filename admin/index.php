@@ -8,7 +8,7 @@ $timeout_duration =  5*60;
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     // If no session, redirect to login page
-    header('Location: ../src/login-form/index.php');
+    header('Location: ../login.php');
     exit();
 }
 
