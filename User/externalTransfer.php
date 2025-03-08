@@ -12,7 +12,7 @@ session_start();
 
 // Prevent unauthorized access
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login-form/index.php');
+    header('Location: ../login.php');
     exit();
 }
 
@@ -28,7 +28,7 @@ if (!isset($_SESSION['user_agent'])) {
 } elseif ($_SESSION['user_agent'] !== hash('sha256', $_SERVER['HTTP_USER_AGENT'])) {
     session_unset();
     session_destroy();
-    header('Location: ../login-form/index.php');
+    header('Location: ../login.php');
     exit();
 }
 
@@ -37,7 +37,7 @@ $timeout_duration = 120;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
     session_unset();
     session_destroy();
-    header('Location: ../login-form/index.php');
+    header('Location: ../login.php');
     exit();
 }
 $_SESSION['last_activity'] = time();
@@ -54,7 +54,7 @@ $_SESSION['last_activity'] = time();
     <script src="https://kit.fontawesome.com/1d6525ef6a.js" crossorigin="anonymous"></script>
     <!-- Swiper CSS (if needed) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-    <link rel="icon" href="../img/logo/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="../asset/img/logo/logo.svg" type="image/svg+xml" />
     <title>External Transfer</title>
     <style>
       html,
@@ -405,7 +405,7 @@ font-weight: 500;
     <div class="container" id="transferForm">
 
         <div class="header">
-          <img src="../img/logo/logo-1.png" alt="Brand Logo" />
+          <img src="../asset/img/logo/logo-1.png" alt="Brand Logo" />
         </div>
         <!-- Transfer Form Section -->
         <div class="shadow px-3" >
@@ -430,7 +430,6 @@ font-weight: 500;
 <!-- Transfer Form -->
 <div>
   <h4 class="text-center text-success mt-2 mb-4">Transfer Money</h4>
-
   <div class="search-box input-container mb-3">
     <input type="text" id="accountInput" class="floating-input w-100"  autocomplete="off">
      <label class="floating-label">Recipient Account Number</label>
@@ -442,7 +441,6 @@ font-weight: 500;
 
   <div class="mb-3">
         <div class="search-bar-container">
-
             <select class="form-control search-bar" id="bankSelect" required onchange="fetchAccountName()">
                 <option value="">Search or Select Bank</option>
             </select>
@@ -453,8 +451,6 @@ font-weight: 500;
             </div>
 <!-- Account Name Display -->
 <div id="accountName" class = "mb-3"></div>
-
-
   <!-- Buttons -->
   <div class="row justify-content-center mt-5">
     <div class="col-auto">
@@ -469,14 +465,12 @@ font-weight: 500;
     </div>
   </div>
 </div>
-
-
         </div>
         </div>
 
 <div class="container hidden" id="amountScreen">
 <div class="header">
-  <img src="../img/logo/logo-1.png" alt="Brand Logo" />
+  <img src="../asset/img/logo/logo-1.png" alt="Brand Logo" />
 </div>
   <!-- Amount Input Section (Hidden Initially) -->
   <div class="input-container mt-3 d-none" id="amountSection">
@@ -520,7 +514,7 @@ font-weight: 500;
 
         <div class="container hidden" id="confirmationScreen">
 <div class="header">
-  <img src="../img/logo/logo-1.png" alt="Brand Logo" />
+  <img src="../asset/img/logo/logo-1.png" alt="Brand Logo" />
 </div>
         <!-- Confirmation Screen -->
         <div  class=" shadow p-3">
@@ -553,18 +547,16 @@ font-weight: 500;
             Cancel
           </button>
         </div>
-
         </div>
       <div class="container hidden" id="processingScreen">
     <div class="header text-center">
-        <img src="../img/logo/logo-1.png" alt="Brand Logo" class="logo" />
+        <img src="../asset/img/logo/logo-1.png" alt="Brand Logo" class="logo" />
     </div>
     <div class="processing-content text-center shadow p-4 rounded">
         <div class="spinner-border text-success mt-3" role="status"></div>
         <p class="mt-3 font-weight-bold">Processing transaction...</p>
     </div>
 </div>
-
 <div class="receipt-container hidden" id="receiptScreen">
     <div class="receipt-header text-center">
         <img src="../img/logo/Untitled design (9).png" alt="Brand Logo" class="logo" />
@@ -633,7 +625,7 @@ font-weight: 500;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="./manual.js"></script>
+<script src="./asset/script/manual.js"></script>
 <script>
   function toggleVisibility(id, icon) {
     let element = document.getElementById(id);

@@ -1,9 +1,9 @@
 
 
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . "/db/db_connect.php");
 
-require_once '../db/db_connect.php';
-require_once __DIR__ . '/../includes/check_remember.php'; // Include remember functionality
+require_once($_SERVER['DOCUMENT_ROOT'] . "/includes/check_remember.php");
 
 $timeout_duration = 60;
 
@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
     // If no session, check if "Remember Me" can re-authenticate
     if (!isset($_COOKIE['remember_token'])) {
         // If no session and no remember token → force login
-        header('Location: ../login-form/index.php');
+        header('Location: ../login.php');
         exit();
     }
 }
@@ -20,12 +20,13 @@ if (!isset($_SESSION['user_id'])) {
 // Check session timeout
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout_duration)) {
     if (isset($_COOKIE['remember_token'])) {
-      require_once __DIR__ . '/../includes/check_remember.php'; // Include remember functionality
+require_once($_SERVER['DOCUMENT_ROOT'] . "/includes/check_remember.php");
+      
     } else {
         session_unset();
         session_destroy();
         setcookie("remember_token", "", time() - 3600, "/");
-        header('Location: ../login-form/index.php?timeout=1');
+        header('Location: ../login.php?timeout=1');
         exit();
     }
 }
@@ -59,42 +60,32 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-     <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- FontAwesome Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- FontAwesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <script
-      src="https://kit.fontawesome.com/1d6525ef6a.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"
-  />
+    <!-- FontAwesome Icons (Only One Version Needed) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="internal.css" />
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 
-    <link rel="icon" href="..\img\logo\logo.svg" type="image/svg">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./asset/css/style.css" />
+    <link rel="stylesheet" href="./asset/css/internal.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="./asset/img/logo/logo.svg" type="image/svg+xml">
+
     <title>User Dashboard || Trustpoint</title>
-  </head>
+</head>
+
   <body>
   <header class="header d-flex justify-content-between align-items-center">
-    <img src="../img/logo/logo.svg" alt="" class = "header-img-first"/>
+    <img src="../asset/img/logo/logo.svg" alt="" class = "header-img-first"/>
 
   <div class="hamburger me-3 ms-2 " onclick="toggleSidebar()">
     <div></div>
@@ -151,7 +142,7 @@ $conn->close();
    <!-- Sidebar -->
 <div id="sidebar">
   <div class="brand mb-5">
-    <img src="../img/logo/logo-1.png" alt="" />
+    <img src="../asset/img/logo/logo-1.png" alt="" />
   </div>
   <button class="close-sidebar" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
   <ul>
@@ -213,7 +204,6 @@ $conn->close();
     </li>
   </ul>
 </div>
-
     <section class="main-content active section" id="dashboard">
       <div
         class="d-flex justify-content-between align-items-center header-name px-3 py-2"
@@ -221,13 +211,11 @@ $conn->close();
         <div class="name">
           <h3>
             Hello, <span class="board-name"><?php echo $_SESSION['user_name']; ?>!</span>
-            <img src="waving-hand-svgrepo-com.svg" alt="Waving hand icon" />
+            <img src="./asset/waving-hand-svgrepo-com.svg" alt="Waving hand icon" />
           </h3>
         </div>
-
         <div class="location-name"><a href="../index.php">Home</a>/user</div>
       </div>
-
       <div
         class="account-container d-flex justify-content-between align-items-center"
       >
@@ -261,40 +249,51 @@ $conn->close();
           <button class="action-button deposit">Add money</button>
         </div>
       </div>
-      <div
-        class="payment-container d-flex flex-column p-4 bg-light rounded shadow-sm"
-      >
-        <!-- Header -->
-        <h3 class="mb-2">Make Payment</h3>
-        <div
-          class="d-flex flex-row justify-content-around align-items-center p-4"
-        >
-          <!-- Transfer to Bank -->
-          <a href="./externalTransfer.php" class="payment-option d-flex align-items-center ">
-            <i class="fas fa-university me-3 text-primary"></i>
-            <span>to Bank</span>
-          </a>
-
-          <!-- Transfer to Same Bank -->
-          <a href="internalTransfer.php" class="payment-option d-flex align-items-center ">
-            <i class="fas fa-user-friends me-3 text-success"></i>
-            <span>to TrustPoint</span>
-          </a>
-
-          <!-- Top-Up Airtime -->
-          <a href="#" class="payment-option d-flex align-items-center ">
-            <i class="fas fa-mobile-alt me-3 text-warning"></i>
-            <span>Top-Up Airtime</span></a
-          >
-
-          <!-- Pay Bills -->
-          <a href="#" class="payment-option d-flex align-items-center ">
-            <i class="fas fa-file-invoice-dollar me-3 text-danger"></i>
-            <span>Pay Bills</span>
-          </a>
+     <!-- Payment Section -->
+<section class="payment-container d-flex flex-column p-4 bg-light rounded shadow-sm">
+    <!-- Header -->
+    <h3 class="mb-2 text-dark">Make Payment</h3>
+    <div class="d-flex flex-row justify-content-around align-items-center p-4">
+    
+        <!-- Transfer Money Button -->
+        <div class="text-center">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#transactionModal">
+                🚀 Transfer Money
+            </button>
         </div>
-      </div>
 
+        
+
+       
+    </div>
+</section>
+<!-- Bootstrap Modal -->
+    <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transactionModalLabel">Select Transfer Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                    <a href = "internalTransfer.php">
+                        <div class="col-md-6">
+                            <div class="card p-3 text-center">
+                                <h5>🔄 Internal Transfer</h5>
+                            </div>
+                        </div>
+                        </a>
+                        <div class="col-md-6">
+                            <div class="card p-3 text-center" onclick="redirectToTransfer('external')">
+                                <h5>🌍 External Transfer</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
       <div class="prequent-container">
         <h3>Most Frequent Transfers</h3>
 
@@ -345,7 +344,7 @@ $conn->close();
         <div class="name">
             <a href="#" class="back"><i class="fa-solid fa-greater-than"></i> Back</a>
         </div>
-        <div class="location-name"><a href="../index.php">Home</a>/<a href="#">user</a>/Beneficiaries</div>
+        <div class="location-name"><a href="./index.php">Home</a>/<a href="#">user</a>/Beneficiaries</div>
     </div>
     <div class="beneficiaries-container d-flex justify-content-between align-items-center">
         <form action="#" method="post" class="account-details flex-grow-1 w-100">
@@ -416,7 +415,7 @@ $conn->close();
            <a href="#" class="back"><i class="fa-solid fa-greater-than"></i> Back</a>
         </div>
 
-        <div class="location-name"><a href="../index.php">Home</a>/<a href="#">user</a>/Services</div>
+        <div class="location-name"><a href="./index.php">Home</a>/<a href="#">user</a>/Services</div>
       </div>
 
       <div class="container mt-5">
@@ -540,10 +539,6 @@ $conn->close();
     </section>
 <section class="transfer-content  hidden section" id="profile">
 <div class="container my-5">
-
-
-
-
     <!-- <div class="">
         <img src="default-profile.png" alt="Profile Picture" class="profile-pic" id="profilePreview">
         <h5 class="mt-2" id="userName">User Name</h5>
@@ -567,8 +562,6 @@ $conn->close();
         <span id="uploadLoader" class="spinner-border spinner-border-sm" style="display: none;"></span>
     </button>
 </div>
-
-
     <!-- Navigation Links -->
     <div class="list-group mt-3 mb-5">
         <a href="#personal-info" class="list-group-item list-group-item-action">Personal Information</a>
@@ -580,8 +573,6 @@ $conn->close();
         <a href="#activity-log" class="list-group-item list-group-item-action">Activity Log</a>
     </div>
 </div>
-
-
       <!-- Right Column: Editable Sections -->
       <div class="col-md-8">
         <!-- Personal Information -->
@@ -593,17 +584,13 @@ $conn->close();
             <div class="card-body">
               <form>
                 <div class="mb-4">
-
-
                 <div class="search-bar-container">
                 <input type="text" class="form-control search-bar" id="fullName" value=" <?php echo $_SESSION['user_name_full']; ?>" readonly>
               <label for="fullName" class="form-label">Full Name</label>
             </div>
                   <small class="text-muted ">Contact support to update.</small>
                 </div>
-
                 <div class="mb-3 mt-3">
-
                 <div class="search-bar-container">
                 <input type="email" class="form-control search-bar" id="email" value="<?php echo $_SESSION['email']; ?>">
               <label for="email" class="form-label">Email Address</label>
@@ -615,14 +602,12 @@ $conn->close();
                   <input type="tel" class="form-control search-bar" id="phone" value="<?php echo $_SESSION['account_number']; ?>"  readonly>
                   <label for="phone" class="form-label ">Account Number</label>
                   </div>
-
                 </div>
                 <button type="submit" class="btn btn-save mt-5">Save Changes</button>
               </form>
             </div>
           </div>
         </div>
-
         <!-- Security Settings -->
         <div class="card section-card" id="security">
           <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapseSecurity">
@@ -649,8 +634,6 @@ $conn->close();
                   </button>
               </div>
           </div>
-
-
                 </div>
                 <div class="mb-3 form-check">
                   <input type="checkbox" class="form-check-input" id="2fa">
@@ -690,7 +673,6 @@ $conn->close();
             </div>
           </div>
         </div>
-
         <!-- Linked Accounts & Cards -->
         <div class="card section-card" id="linked-accounts">
           <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapseLinkedAccounts">
@@ -793,8 +775,6 @@ $conn->close();
         </div>
     </div>
 </div>
-
-
       </div>
     </div>
   </div>
@@ -938,20 +918,19 @@ $conn->close();
 <!-- SweetAlert (for alert popups) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- External/local scripts -->
-<script src="../src/login-form/script/logout.js"></script>
-<script src="./internal.js"></script>
-<script src="./activity_log.js"></script>
-<script src="./upload.js"></script>
-<script src="./beneficiary.js"></script>
+
+
+<script src="../asset/login-form/script/logout.js"></script>
+<script src="./asset/script/internal.js"></script>
+<script src="./asset/script/activity_log.js"></script>
+<script src="./asset/script/upload.js"></script>
+<script src="./asset/script/beneficiary.js"></script>
 
 <!-- Main script (should be last to ensure all dependencies are loaded) -->
-<script src="script.js"></script>
-<script src="ajax-fetch.js"></script>
+<script src="./asset/script/script.js"></script>
+<script src="./asset/script/ajax-fetch.js"></script>
 
 <script>
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const isViewAll = window.location.href.includes("view_all=true"); // Detect if it's the full page
     fetchTransactions(1, isViewAll);
@@ -964,6 +943,16 @@ $(document).ready(function () {
 
     fetch_frequent_transactions();
 });
+
+ function redirectToTransfer(type) {
+            if (type === "internal") {
+                window.location.href = "./internalTransfer.php";
+            } else if (type === "external") {
+                window.location.href = "./externalTransfer.php";
+            }
+        }
+
+
 
 $(document).on("click", ".prequent", function (e) {
     e.preventDefault(); // Prevent default navigation
@@ -1010,12 +999,10 @@ document.addEventListener("DOMContentLoaded", function () {
         sidebar.classList.toggle("active");
         hamburger.classList.toggle("active");
     }
-
     function closeSidebar() {
         sidebar.classList.remove("active");
         hamburger.classList.remove("active");
     }
-
     // Open/close sidebar when clicking the hamburger icon
     hamburger.addEventListener("click", function (event) {
         event.stopPropagation(); // Prevent click from reaching document
@@ -1051,8 +1038,6 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-
-
     // Ensure the menu exists before adding the event listener
     if ($("#userMenu").length && $(".dropdown-menu").length) {
         $("#userMenu").on("click", function (event) {
@@ -1067,24 +1052,18 @@ $(document).ready(function () {
             }
         });
     }
-
-
     loadBalance();
     setInterval(loadBalance, 5000);
-
     // ** Profile Dropdown Toggle **
     $("#userMenu").click(function (event) {
         event.stopPropagation();
         $(".dropdown-menu").toggleClass("show");
     });
-
     $(document).click(function (event) {
         if (!$("#userMenu").is(event.target) && $(".dropdown-menu").has(event.target).length === 0) {
             $(".dropdown-menu").removeClass("show");
         }
     });
-
-
     // ** Profile Picture Preview **
     $("#profilePic").change(function (event) {
         const file = event.target.files[0];
@@ -1102,16 +1081,11 @@ $(document).ready(function () {
         $("#profilePreview").attr("src", 'default-profile.png');
         $("#profilePic").val('');
     });
-
-
-
-
-
 $(document).ready(function () {
     var senderAccount = "<?php echo $_SESSION['account_number']; ?>"; // Get logged-in user's account
 
     $.ajax({
-        url: "./fetch_frequent_transactions.php",
+        url: "https://trustpoint.wuaze.com/User/asset/include/fetch_frequent_transactions.php",
         type: "POST",
         data: { sender_account: senderAccount },
         dataType: "json",
@@ -1122,12 +1096,11 @@ $(document).ready(function () {
                 console.log("No frequent recipients found.");
             } else {
                 let html = "";
-
                             response.forEach(function (tx) {
                 html += `
                     <div class="swiper-slide">
                         <a href="./internalTransfer.php" class="prequent" data-name="${tx.name}" data-account="${tx.receiver_account}">
-                            <img src="logo.svg" alt="User Logo">
+                            <img src="https://trustpoint.wuaze.com/User/asset/logo.svg" alt="User Logo">
                             <span>
                                 ${tx.name}
                                 <p>${tx.receiver_account}</p>
@@ -1187,95 +1160,9 @@ $(document).on("click", ".prequent", function (e) {
     // Redirect to transfer UI
     window.location.href = "./internalTransfer.php";
 });
-    // ** Change Password Form Submission **
-    $("#password-change").submit(function (e) {
-        e.preventDefault();
-        var oldPassword = $("#oldPassword").val();
-        var newPassword = $("#newPassword").val();
-        var confirmPassword = $("#confirmPassword").val();
-        var submitButton = $(".btn-save");
-        var btnText = $(".btn-text");
-        var loader = $(".spinner-border");
-
-        // Disable button & show loader
-        submitButton.prop("disabled", true);
-        btnText.text("Processing...");
-        loader.removeClass("d-none");
-
-        if (newPassword.length < 6) {
-            Swal.fire("Warning", "Password should be at least 6 characters long.", "warning");
-            resetButton();
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            Swal.fire("Error", "Passwords do not match!", "error");
-            resetButton();
-            return;
-        }
-
-        changePassword();
-        function resetButton() {
-            submitButton.prop("disabled", false);
-            btnText.text("Save Changes");
-            loader.addClass("d-none");
-        }
-    });
-
-    // ** Create Transaction PIN **
-    $("#create-transaction-pin").submit(function (e) {
-        e.preventDefault();
-        var pin = $("#transactionPin").val();
-        var confirmPin = $("#confirmTransactionPin").val();
-
-        if (pin.length !== 4 || confirmPin.length !== 4) {
-            Swal.fire("Error", "PIN must be 4 digits.", "error");
-            return;
-        }
-        if (pin !== confirmPin) {
-            Swal.fire("Error", "PINs do not match.", "error");
-            return;
-        }
-
-        var submitBtn = $(this).find("button[type=submit]");
-        var spinner = submitBtn.find(".spinner-border");
-        var btnText = submitBtn.find(".btn-text");
-
-        btnText.addClass("d-none");
-        spinner.removeClass("d-none");
-        process_pin();
-
-    });
-
-    // ** Change Transaction PIN **
-    $("#change-pin").submit(function (e) {
-        e.preventDefault();
-        var oldPin = $("#oldPin").val();
-        var newPin = $("#newPin").val();
-        var confirmNewPin = $("#confirmNewPin").val();
-
-        if (newPin.length !== 4 || confirmNewPin.length !== 4) {
-            Swal.fire("Error", "PIN must be 4 digits.", "error");
-            return;
-        }
-        if (newPin !== confirmNewPin) {
-            Swal.fire("Error", "New PINs do not match.", "error");
-            return;
-        }
-
-        var submitBtn = $(this).find("button[type=submit]");
-        var spinner = submitBtn.find(".spinner-border");
-        var btnText = submitBtn.find(".btn-text");
-
-        btnText.addClass("d-none");
-        spinner.removeClass("d-none");
-
-        change_pin();
-    });
+    
 });
 </script>
-
-
   </body>
 </html>
 

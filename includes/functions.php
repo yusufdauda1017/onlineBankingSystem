@@ -1,11 +1,12 @@
 
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
 
-use Mailgun\Mailgun;
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
 use Dotenv\Dotenv;
+
 // Load environment variables
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv = Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
 $dotenv->load();
 
 // Get Mailgun credentials
@@ -15,36 +16,61 @@ $mailgunDomain = $_ENV['MAILGUN_DOMAIN'];
 function sendEmail($email, $otp) {
     global $mailgunApiKey, $mailgunDomain;
 
-    // Initialize Mailgun
-    $mg = Mailgun::create($mailgunApiKey);
+    // Mailgun API Endpoint
+    $mailgunUrl = "https://api.mailgun.net/v3/$mailgunDomain/messages";
 
-    try {
-        $mg->messages()->send($mailgunDomain, [
-            'from'    => 'noreply@trustp.me',
-            'to'      => $email,
-            'subject' => ' Trustpoint OTP Code',
-            'html'    => "
-                <div style='background-color: #f4f4f4; padding: 20px; font-family: Arial, sans-serif; text-align: center;'>
-                    <div style='background-color: #ffffff; border-radius: 8px; padding: 20px; max-width: 500px; margin: auto;'>
-                        <h1 style='color: #333;'>Your OTP Code</h1>
-                        <p style='color: #555; font-size: 16px;'>Your OTP is: <strong style='color: #007BFF;'>$otp</strong></p>
-                        <p style='color: #555; font-size: 14px;'>It will expire in <strong>2 minutes</strong>.</p>
-                        <p style='font-size: 12px; color: #999;'>Please do not share this code with anyone.</p>
-                    </div>
-                </div>"
-        ]);
+    // Prepare POST data
+    $postData = http_build_query([
+        'from'    => 'noreply@trustp.me',
+        'to'      => $email,
+        'subject' => 'Trustpoint OTP Code',
+        'html'    => "
+            <div style='background-color: #f4f4f4; padding: 20px; font-family: Arial, sans-serif; text-align: center;'>
+                <div style='background-color: #ffffff; border-radius: 8px; padding: 20px; max-width: 500px; margin: auto;'>
+                    <h1 style='color: #333;'>Your OTP Code</h1>
+                    <p style='color: #555; font-size: 16px;'>Your OTP is: <strong style='color: #007BFF;'>$otp</strong></p>
+                    <p style='color: #555; font-size: 14px;'>It will expire in <strong>2 minutes</strong>.</p>
+                    <p style='font-size: 12px; color: #999;'>Please do not share this code with anyone.</p>
+                </div>
+            </div>"
+    ]);
 
-        return true;
-    } catch (\Mailgun\Exception\HttpClientException $e) {
-        error_log("Mailgun Error: " . $e->getMessage());
-        return false;
-    } catch (\Exception $e) {
-        error_log("General Error: " . $e->getMessage());
+    // Mailgun API headers
+    $authHeader = base64_encode("api:$mailgunApiKey");
+
+    // HTTP context options
+    $context = stream_context_create([
+        'http' => [
+            'method'  => 'POST',
+            'header'  => "Authorization: Basic $authHeader\r\n" .
+                         "Content-Type: application/x-www-form-urlencoded\r\n",
+            'content' => $postData
+        ]
+    ]);
+
+    // Send request using file_get_contents()
+    $response = file_get_contents($mailgunUrl, false, $context);
+    
+    if ($response !== false) {
+        $responseData = json_decode($response, true);
+        
+        if (isset($responseData['message']) && strpos($responseData['message'], "Queued") !== false) {
+            return true;
+        } else {
+            error_log("Mailgun Error: " . json_encode($responseData));
+            return false;
+        }
+    } else {
+        error_log("Mailgun Request Failed: " . json_encode(error_get_last()));
         return false;
     }
 }
+function generateOTP($email, $phoneNumber, $conn) { 
+    // Set the timezone to Nigerian Time (GMT+1)
+    date_default_timezone_set('Africa/Lagos');
+    
+    $currentTime = time(); // Current Unix timestamp
 
-function generateOTP($email, $phoneNumber, $conn) {
     $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM users WHERE email = ? OR phone_number = ?");
     if (!$stmt) {
         return [
@@ -66,37 +92,63 @@ function generateOTP($email, $phoneNumber, $conn) {
         ];
     }
 
+
+    // ✅ Check OTP requests in the last 1 hour
+    $stmt = $conn->prepare("SELECT COUNT(*) AS request_count, MIN(created_at) AS first_request_time 
+                            FROM otps WHERE email = ? 
+                            AND created_at > NOW() - INTERVAL 1 HOUR");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    if ($row['request_count'] >= 3) {
+        $remainingTime = (strtotime($row['first_request_time']) + 3600) - $currentTime;
+        return [
+            'success' => false,
+            'message' => 'Too many OTP requests. Please try again after 1 hour.',
+            'remaining_time' => max(0, $remainingTime)
+        ];
+    }
+
+    // ✅ Check if the last OTP was sent less than 2 minutes ago
+    $stmt = $conn->prepare("SELECT created_at FROM otps WHERE email = ? ORDER BY created_at DESC LIMIT 1");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $existingOtp = $result->fetch_assoc();
+
+    if ($existingOtp) {
+        $lastOtpTime = strtotime($existingOtp["created_at"]);
+        if ($currentTime - $lastOtpTime < 120) {
+            return [
+                'success' => false,
+                'message' => "Please wait " . (120 - ($currentTime - $lastOtpTime)) . " seconds before requesting a new OTP."
+            ];
+        }
+    }
+
+    // ✅ Generate and hash OTP
     $otp = rand(1000, 9999);
     $hashedOtp = password_hash($otp, PASSWORD_DEFAULT);
-    $createdAt = date('Y-m-d H:i:s');
+    $createdAt = date("Y-m-d H:i:s");
 
     $stmt = $conn->prepare("INSERT INTO otps (email, otp, created_at) VALUES (?, ?, ?)");
-    if (!$stmt) {
-        return [
-            'success' => false,
-            'message' => 'Database error: Failed to prepare insert statement.'
-        ];
-    }
-
     $stmt->bind_param("sss", $email, $hashedOtp, $createdAt);
-
-    if ($stmt->execute()) {
-        $stmt->close();
-        $emailSent = sendEmail($email, $otp);
-
-        return [
-            'success' => $emailSent,
-            'message' => $emailSent ? 'OTP generated and sent successfully.' : 'Failed to send OTP.',
-            'email_status' => $emailSent ? 'Sent' : 'Failed'
-        ];
-    } else {
-        $stmt->close();
-        return [
-            'success' => false,
-            'message' => 'Failed to generate OTP. Please try again.'
-        ];
+    
+    if (!$stmt->execute()) {
+        return ['success' => false, 'message' => 'Failed to save OTP.', 'error' => $stmt->error];
     }
+
+    // ✅ Send OTP via Email
+    $emailSent = sendEmail($email, $otp);
+    return [
+        'success' => $emailSent,
+        'message' => $emailSent ? 'OTP sent successfully.' : 'Failed to send OTP.',
+        'otpSentTime' => $createdAt
+    ];
 }
+
 
 function verifyOTP($email, $inputOtp, $conn, $formData = null) {
     $otpExpiryTime = 2 * 60;
